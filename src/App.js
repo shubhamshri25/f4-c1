@@ -1,25 +1,95 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
 
 function App() {
+  let [user, setUser] = useState({
+    fname: "",
+    email: "",
+    password: "",
+    cnf_password: "",
+    token: "",
+  });
+
+  let [msg, setMsg] = useState({
+    msg_info: "",
+    status: "",
+  });
+
+  function submitform(e) {
+    e.preventDefault();
+
+    if (
+      user.fname === "" ||
+      user.email === "" ||
+      user.password === "" ||
+      user.cnf_password === ""
+    ) {
+      setMsg({
+        msg_info: "Error : All the fields are mandatory",
+        status: "error",
+      });
+      return;
+    } else if (user.password !== user.cnf_password) {
+      setMsg({ msg_info: "Password not matching", status: "error" });
+      return;
+    } else {
+      setMsg({ msg_info: "Successfully Signed Up!", status: "success" });
+    }
+  }
+
+  console.log("user", user);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="form-cont">
+      <h1>Signup.</h1>
+
+      <form>
+        <input
+          type="text"
+          placeholder="Full Name"
+          id="name-inp"
+          onChange={(e) => {
+            setUser({ ...user, fname: e.target.value });
+          }}
+        />
+        <input
+          type="email"
+          name=""
+          id="email-inp"
+          placeholder="Email"
+          onChange={(e) => {
+            setUser({ ...user, email: e.target.value });
+          }}
+        />
+        <input
+          type="password"
+          name=""
+          id="pass-inp"
+          placeholder="Password"
+          onChange={(e) => {
+            setUser({ ...user, password: e.target.value });
+          }}
+        />
+        <input
+          type="password"
+          name=""
+          id="cnf-pass-inp"
+          placeholder="Confirm Password"
+          onChange={(e) => {
+            setUser({ ...user, cnf_password: e.target.value });
+          }}
+        />
+        <span
+          id="err-msg"
+          className={msg.status === "error" ? "error-msg" : "success-msg"}
         >
-          Learn React
-        </a>
-      </header>
+          {msg.msg_info}
+        </span>
+        <button type="submit" id="sign-up" onClick={submitform}>
+          Signup
+        </button>
+      </form>
     </div>
   );
 }
-
 export default App;
